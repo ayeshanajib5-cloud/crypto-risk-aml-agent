@@ -111,6 +111,7 @@ services:
       POSTGRES_PASSWORD: changeme_in_prod
       REDIS_HOST: redis
       REDIS_PORT: 6379
+      ALLOWED_ORIGINS: http://localhost:3000,http://localhost:8000
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
     networks:
       - crypto-net

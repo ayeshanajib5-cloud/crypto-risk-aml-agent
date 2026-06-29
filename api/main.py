@@ -5,6 +5,7 @@ Crypto Risk + AML Compliance Dashboard API
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import risk, compliance
+from config import get_allowed_origins
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -17,7 +18,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=get_allowed_origins(),
     allow_methods=["*"],
     allow_headers=["*"],
 )
