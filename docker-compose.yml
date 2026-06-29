@@ -90,6 +90,31 @@ services:
     restart: on-failure
     networks:
       - crypto-net
+  spark:
+    build:
+      context: ./spark_jobs
+      dockerfile: Dockerfile
+    container_name: spark-aml
+    hostname: spark-aml
+    depends_on:
+      kafka:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      RAW_TRADES_TOPIC: raw-trades
+      RISK_SIGNALS_TOPIC: market-risk-signals
+      POSTGRES_URL: jdbc:postgresql://postgres:5432/crypto_risk
+      POSTGRES_USER: riskadmin
+      POSTGRES_PASSWORD: changeme_in_prod
+      ZSCORE_ALERT_THRESHOLD: "3.0"
+      ZSCORE_CRITICAL_THRESHOLD: "5.0"
+    command: spark-submit --master local[2] /app/vwap_zscore.py
+    restart: on-failure
+    networks:
+      - crypto-net
+
 volumes:
   postgres-data:
     driver: local
