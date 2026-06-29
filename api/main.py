@@ -4,8 +4,9 @@ Crypto Risk + AML Compliance Dashboard API
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import risk, compliance
+from routers import risk, compliance, claude_router
 from config import get_allowed_origins
+from prometheus_fastapi_instrumentator import Instrumentator
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -25,6 +26,9 @@ app.add_middleware(
 
 app.include_router(risk.router)
 app.include_router(compliance.router)
+app.include_router(claude_router.router)
+
+Instrumentator().instrument(app).expose(app)
 
 @app.get("/health")
 async def health():

@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spark-aml
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spark-aml
+  template:
+    metadata:
+      labels:
+        app: spark-aml
+    spec:
+      containers:
+      - name: spark-aml
+        image: crypto-risk-aml-agent-spark:latest
+        imagePullPolicy: Never
+        env:
+        - name: KAFKA_BOOTSTRAP_SERVERS
+          value: kafka:9092
+        - name: RAW_TRADES_TOPIC
+          value: raw-trades
+        - name: RISK_SIGNALS_TOPIC
+          value: market-risk-signals

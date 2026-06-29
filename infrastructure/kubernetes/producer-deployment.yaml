@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ws-producer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ws-producer
+  template:
+    metadata:
+      labels:
+        app: ws-producer
+    spec:
+      containers:
+      - name: ws-producer
+        image: crypto-risk-aml-agent-producer:latest
+        imagePullPolicy: Never
+        env:
+        - name: KAFKA_BOOTSTRAP_SERVERS
+          value: kafka:9092
+        - name: RAW_TRADES_TOPIC
+          value: raw-trades

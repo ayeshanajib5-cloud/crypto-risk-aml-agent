@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aml-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aml-api
+  template:
+    metadata:
+      labels:
+        app: aml-api
+    spec:
+      containers:
+      - name: aml-api
+        image: crypto-risk-aml-agent-api:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8000

@@ -1,0 +1,12 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: "aml-api"
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["aml-api:8000"]
+
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["prometheus:9090"]
