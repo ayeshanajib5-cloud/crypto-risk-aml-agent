@@ -90,6 +90,31 @@ services:
     restart: on-failure
     networks:
       - crypto-net
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: aml-api
+    hostname: aml-api
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: crypto_risk
+      POSTGRES_USER: riskadmin
+      POSTGRES_PASSWORD: changeme_in_prod
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    networks:
+      - crypto-net
+
   spark:
     build:
       context: ./spark_jobs
